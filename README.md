@@ -1,0 +1,89 @@
+# VCF-PLINK Converter
+
+[![CI](https://github.com/dsugurtuna/vcf-plink-converter/actions/workflows/ci.yml/badge.svg)](https://github.com/dsugurtuna/vcf-plink-converter/actions/workflows/ci.yml)
+
+**Bidirectional VCF and PLINK format conversion with file validation and VCF inspection.**
+
+Wraps PLINK and BCFtools for VCF → PLINK binary and PLINK → VCF conversion, with structural validation (VCF headers, PLINK magic bytes, file triads) and lightweight VCF metadata inspection.
+
+> **Portfolio project.** Demonstrates generalised format conversion workflows. No real genomic data is included.
+
+---
+
+## Architecture
+
+```
+src/vcf_converter/
+    __init__.py      # Public API exports
+    converter.py     # Bidirectional format conversion (FormatConverter)
+    validator.py     # VCF and PLINK file validation (FileValidator)
+    inspector.py     # VCF header and content inspection (VCFInspector)
+tests/
+    test_converter.py  # Conversion and validation tests
+    test_inspector.py  # VCF inspection tests
+```
+
+---
+
+## Quick start
+
+```bash
+pip install -e ".[dev]"
+pytest -v
+```
+
+### Python API
+
+```python
+from vcf_converter import FormatConverter, FileValidator, VCFInspector
+
+# Validate input
+val = FileValidator()
+report = val.validate_vcf("cohort.vcf")
+assert report.all_valid
+
+# Inspect VCF
+inspector = VCFInspector()
+info = inspector.inspect("cohort.vcf")
+print(f"Samples: {info.sample_count}, Variants: {info.variant_count}")
+
+# Convert VCF to PLINK
+conv = FormatConverter()
+result = conv.vcf_to_plink("cohort.vcf", "cohort_plink")
+print(f"Converted: {result.sample_count} samples, {result.variant_count} variants")
+
+# Convert PLINK to VCF
+result = conv.plink_to_vcf("cohort_plink", "cohort_out")
+```
+
+---
+
+## Key features
+
+| Feature | Detail |
+| :--- | :--- |
+| **VCF → PLINK** | Convert to binary format (.bed/.bim/.fam) via PLINK |
+| **PLINK → VCF** | Recode binary back to VCF |
+| **VCF validation** | Header check, gzip support, structural verification |
+| **PLINK validation** | Magic byte check, file triad completeness |
+| **VCF inspection** | Sample/variant counting, contig and field extraction |
+| **Batch validation** | Auto-detect format and validate multiple files |
+
+## Development
+
+```bash
+make dev        # install with dev dependencies
+make test       # run pytest
+make lint       # run ruff
+make clean      # remove build artefacts
+```
+
+## Jira provenance
+
+| Ticket | Description |
+| :--- | :--- |
+| BIOIN-100 | VCF ↔ PLINK format conversion for cohort data provisioning |
+
+---
+
+*Created by [dsugurtuna](https://github.com/dsugurtuna)*
