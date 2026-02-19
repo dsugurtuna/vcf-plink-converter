@@ -1,7 +1,7 @@
 """Tests for FormatConverter and FileValidator."""
 
 from vcf_converter.converter import FormatConverter, ConversionResult
-from vcf_converter.validator import FileValidator, ValidationReport
+from vcf_converter.validator import FileValidator
 
 
 class TestFormatConverter:
