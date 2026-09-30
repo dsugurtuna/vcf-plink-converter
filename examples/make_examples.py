@@ -45,7 +45,7 @@ def main() -> None:
     for (chrom, vid, pos, ref, alt), row in zip(VARIANTS, GENOTYPES, strict=True):
         calls = [VCF_GT[g] for g in row]
         lines.append(
-            "\t".join([chrom, vid, pos, ref, alt, ".", "PASS", ".", "GT", *calls])
+            "\t".join([chrom, pos, vid, ref, alt, ".", "PASS", ".", "GT", *calls])
         )
     (HERE / "demo.vcf").write_text("\n".join(lines) + "\n")
 
