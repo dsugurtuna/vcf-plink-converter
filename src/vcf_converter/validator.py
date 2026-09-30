@@ -8,7 +8,6 @@ from __future__ import annotations
 import gzip
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List
 
 
 @dataclass
@@ -17,8 +16,8 @@ class ValidationReport:
 
     files_checked: int = 0
     valid: int = 0
-    invalid: List[str] = field(default_factory=list)
-    warnings: List[str] = field(default_factory=list)
+    invalid: list[str] = field(default_factory=list)
+    warnings: list[str] = field(default_factory=list)
 
     @property
     def all_valid(self) -> bool:
@@ -87,7 +86,7 @@ class FileValidator:
 
         return report
 
-    def validate_batch(self, paths: List[str | Path]) -> ValidationReport:
+    def validate_batch(self, paths: list[str | Path]) -> ValidationReport:
         """Validate multiple files (VCF or PLINK prefix detection)."""
         combined = ValidationReport()
         for p in paths:

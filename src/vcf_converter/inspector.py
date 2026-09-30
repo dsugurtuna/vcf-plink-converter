@@ -9,7 +9,6 @@ from __future__ import annotations
 import gzip
 from dataclasses import dataclass, field
 from pathlib import Path
-from typing import List
 
 
 @dataclass
@@ -19,9 +18,9 @@ class InspectionResult:
     file_path: str = ""
     sample_count: int = 0
     variant_count: int = 0
-    contigs: List[str] = field(default_factory=list)
-    info_fields: List[str] = field(default_factory=list)
-    format_fields: List[str] = field(default_factory=list)
+    contigs: list[str] = field(default_factory=list)
+    info_fields: list[str] = field(default_factory=list)
+    format_fields: list[str] = field(default_factory=list)
     header_line_count: int = 0
 
 
@@ -66,20 +65,20 @@ class VCFInspector:
                 end = line.find(",", start)
                 if end < 0:
                     end = line.find(">", start)
-                contig_id = line[start + 3: end]
+                contig_id = line[start + 3 : end]
                 if contig_id:
                     result.contigs.append(contig_id)
         elif line.startswith("##INFO="):
             start = line.find("ID=")
             if start >= 0:
                 end = line.find(",", start)
-                field_id = line[start + 3: end]
+                field_id = line[start + 3 : end]
                 if field_id:
                     result.info_fields.append(field_id)
         elif line.startswith("##FORMAT="):
             start = line.find("ID=")
             if start >= 0:
                 end = line.find(",", start)
-                field_id = line[start + 3: end]
+                field_id = line[start + 3 : end]
                 if field_id:
                     result.format_fields.append(field_id)

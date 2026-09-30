@@ -1,6 +1,6 @@
 """Tests for FormatConverter and FileValidator."""
 
-from vcf_converter.converter import FormatConverter, ConversionResult
+from vcf_converter.converter import ConversionResult, FormatConverter
 from vcf_converter.validator import FileValidator
 
 
@@ -33,7 +33,9 @@ class TestFormatConverter:
 
     def test_count_bim_variants(self, tmp_path):
         bim = tmp_path / "test.bim"
-        bim.write_text("1\trs1\t0\t100\tA\tG\n1\trs2\t0\t200\tC\tT\n1\trs3\t0\t300\tG\tA\n")
+        bim.write_text(
+            "1\trs1\t0\t100\tA\tG\n1\trs2\t0\t200\tC\tT\n1\trs3\t0\t300\tG\tA\n"
+        )
         count = FormatConverter._count_bim_variants(str(bim))
         assert count == 3
 

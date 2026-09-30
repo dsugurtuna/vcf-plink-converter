@@ -9,7 +9,6 @@ from __future__ import annotations
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
-from typing import List
 
 
 @dataclass
@@ -49,13 +48,15 @@ class FormatConverter:
         self,
         vcf_path: str,
         output_prefix: str,
-        extra_args: List[str] | None = None,
-    ) -> List[str]:
+        extra_args: list[str] | None = None,
+    ) -> list[str]:
         cmd = [
             self.plink_binary,
-            "--vcf", vcf_path,
+            "--vcf",
+            vcf_path,
             "--make-bed",
-            "--out", output_prefix,
+            "--out",
+            output_prefix,
             "--allow-extra-chr",
         ]
         if extra_args:
@@ -66,13 +67,16 @@ class FormatConverter:
         self,
         bfile_prefix: str,
         output_path: str,
-        extra_args: List[str] | None = None,
-    ) -> List[str]:
+        extra_args: list[str] | None = None,
+    ) -> list[str]:
         cmd = [
             self.plink_binary,
-            "--bfile", bfile_prefix,
-            "--recode", "vcf",
-            "--out", output_path,
+            "--bfile",
+            bfile_prefix,
+            "--recode",
+            "vcf",
+            "--out",
+            output_path,
             "--allow-extra-chr",
         ]
         if extra_args:
@@ -83,7 +87,7 @@ class FormatConverter:
         self,
         vcf_path: str,
         output_prefix: str,
-        extra_args: List[str] | None = None,
+        extra_args: list[str] | None = None,
     ) -> ConversionResult:
         """Convert VCF to PLINK binary format (.bed/.bim/.fam)."""
         cmd = self._build_vcf_to_plink_cmd(vcf_path, output_prefix, extra_args)
@@ -106,7 +110,7 @@ class FormatConverter:
         self,
         bfile_prefix: str,
         output_path: str,
-        extra_args: List[str] | None = None,
+        extra_args: list[str] | None = None,
     ) -> ConversionResult:
         """Convert PLINK binary format to VCF."""
         cmd = self._build_plink_to_vcf_cmd(bfile_prefix, output_path, extra_args)

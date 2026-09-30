@@ -40,7 +40,9 @@ class TestVCFInspector:
         assert result.variant_count == 1
 
     def test_empty_vcf(self, tmp_path):
-        content = "##fileformat=VCFv4.2\n#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n"
+        content = (
+            "##fileformat=VCFv4.2\n#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n"
+        )
         vcf = self._write_vcf(tmp_path, content)
         result = VCFInspector().inspect(vcf)
         assert result.sample_count == 0

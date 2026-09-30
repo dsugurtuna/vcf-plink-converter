@@ -2,9 +2,9 @@
 
 __version__ = "1.0.0"
 
-from .converter import FormatConverter, ConversionResult
+from .converter import ConversionResult, FormatConverter
+from .inspector import InspectionResult, VCFInspector
 from .validator import FileValidator, ValidationReport
-from .inspector import VCFInspector, InspectionResult
 
 __all__ = [
     "FormatConverter",
