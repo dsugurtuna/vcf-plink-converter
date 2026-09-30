@@ -16,8 +16,9 @@ class TestFormatConverter:
         conv = FormatConverter()
         cmd = conv._build_plink_to_vcf_cmd("input", "output")
         assert "--bfile" in cmd
-        assert "--recode" in cmd
-        assert "vcf" in cmd
+        # vcf-iid keeps IIDs as sample names; plain "vcf" writes FID_IID.
+        assert cmd[cmd.index("--recode") + 1] == "vcf-iid"
+        assert "--keep-allele-order" in cmd
 
     def test_extra_args(self):
         conv = FormatConverter()
@@ -51,7 +52,11 @@ class TestFormatConverter:
 class TestFileValidator:
     def test_validate_vcf_valid(self, tmp_path):
         vcf = tmp_path / "test.vcf"
-        vcf.write_text("##fileformat=VCFv4.2\n#CHROM\tPOS\tID\n1\t100\trs1\n")
+        vcf.write_text(
+            "##fileformat=VCFv4.2\n"
+            "#CHROM\tPOS\tID\tREF\tALT\tQUAL\tFILTER\tINFO\n"
+            "1\t100\trs1\tA\tG\t.\t.\t.\n"
+        )
         val = FileValidator()
         report = val.validate_vcf(vcf)
         assert report.all_valid
@@ -70,7 +75,8 @@ class TestFileValidator:
 
     def test_validate_plink_binary(self, tmp_path):
         prefix = tmp_path / "test"
-        (tmp_path / "test.bed").write_bytes(b"\x6c\x1b\x01" + b"\x00" * 10)
+        # 1 variant x 1 sample: 3 magic bytes + 1 genotype byte.
+        (tmp_path / "test.bed").write_bytes(b"\x6c\x1b\x01" + b"\x00")
         (tmp_path / "test.bim").write_text("1\trs1\t0\t100\tA\tG\n")
         (tmp_path / "test.fam").write_text("FAM1 IND1 0 0 1 -9\n")
         val = FileValidator()
