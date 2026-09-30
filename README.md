@@ -94,12 +94,6 @@ Used before [gwas-data-preparation](https://github.com/dsugurtuna/gwas-data-prep
 - Check chromosome naming (`1` versus `chr1`) against a target build.
 - Record input and output checksums for each conversion.
 
-## Jira provenance
-
-| Ticket | Description |
-| :--- | :--- |
-| BIOIN-100 | VCF ↔ PLINK format conversion for cohort data provisioning |
-
 ## Licence
 
 MIT is declared in `pyproject.toml`, but no licence file is included yet.
